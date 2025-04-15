@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传资源</title>
+    <!-- 添加简单的样式 -->
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        form div { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, select { width: 300px; padding: 5px; }
+        button { padding: 8px 15px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .error { color: red; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>上传资料</h1>
+    </header>
+
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}  <!-- 必须包含 CSRF 令牌 -->
+
+        <div>
+            {{ form.title.label }}<br>
+            {{ form.title() }}
+            {% for error in form.title.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.category.label }}<br>
+            {{ form.category() }}  <!-- 使用下拉选择而非文本输入 -->
+            {% for error in form.category.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.file.label }}<br>
+            {{ form.file() }}
+            {% for error in form.file.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <button type="submit">上传</button>
+    </form>
+</body>
+</html>

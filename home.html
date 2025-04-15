@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生网站首页</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .welcome-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #002244;
+        }
+
+        .scroll-announcement {
+            background-color: #003366;
+            color: white;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .scroll-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll-left 20s linear infinite;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .lang-switch {
+            text-align: right;
+            margin: 10px 20px 0 0;
+        }
+
+        .lang-switch a {
+            color: #003366;
+            font-weight: bold;
+            margin-left: 12px;
+            text-decoration: none;
+        }
+
+        .lang-switch a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            margin-top: 50px;
+        }
+
+        .logo {
+            max-width: 140px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='desheng_logo.png') }}" alt="Desheng School Logo" class="logo">
+        <h1>{% if session.get('lang') == 'en' %}Welcome to Desheng School{% else %}欢迎来到德胜学校学生平台{% endif %}</h1>
+        <nav>
+            <a href="{{ url_for('login') }}">{% if session.get('lang') == 'en' %}Login{% else %}登录{% endif %}</a>
+            <a href="{{ url_for('register') }}">{% if session.get('lang') == 'en' %}Register{% else %}注册{% endif %}</a>
+        </nav>
+    </header>
+
+    <!-- 多语言切换 -->
+    <div class="lang-switch">
+        {% if session.get('lang') == 'en' %}
+            <a href="{{ url_for('set_language', lang_code='zh') }}">切换中文</a>
+        {% else %}
+            <a href="{{ url_for('set_language', lang_code='en') }}">Switch to English</a>
+        {% endif %}
+    </div>
+
+    <!-- 滚动公告条 -->
+    <div class="scroll-announcement">
+        <div class="scroll-text">
+            {% for ann in announcements %}
+                📢 {{ ann.title }} - {{ ann.timestamp.strftime('%Y-%m-%d') }} &nbsp;&nbsp;&nbsp;
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="welcome-container">
+        <h2>{% if session.get('lang') == 'en' %}Start Your Smart Campus Journey{% else %}智慧校园，从这里开始{% endif %}</h2>
+        <p>{% if session.get('lang') == 'en' %}
+            View your timetable, download learning materials, track class progress and read school announcements.
+        {% else %}
+            在这里你可以查看课程安排、下载学习资料、阅读公告通知，还可以实时掌握上课进度。
+        {% endif %}</p>
+
+        <div class="btn-group">
+            <a href="{{ url_for('login') }}" class="btn">{% if session.get('lang') == 'en' %}Login Now{% else %}立即登录{% endif %}</a>
+            <a href="{{ url_for('register') }}" class="btn">{% if session.get('lang') == 'en' %}Create Account{% else %}创建账号{% endif %}</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 德胜学校 (国际). All rights reserved.</p>
+    </footer>
+</body>
+</html>

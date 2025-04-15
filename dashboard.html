@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生仪表板</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>欢迎, {{ user.username }}</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('resources') }}" class="library-link">进入学校资料馆</a></li>
+            {% if user.username == 'Brooks' %}
+                <li><a href="{{ url_for('upload_resource') }}" class="upload-link">上传资料</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- 动态课程展示模块（仅学生可见） -->
+    {% if not user.is_admin %}
+        <section>
+            <h2>📘 实时课程信息</h2>
+            {% if current_class %}
+                <p><strong>当前课程：</strong> {{ current_class.subject }}（{{ current_class.start_time.strftime('%H:%M') }} - {{ current_class.end_time.strftime('%H:%M') }}）</p>
+            {% else %}
+                <p><strong>当前课程：</strong> 暂无正在进行的课程</p>
+            {% endif %}
+
+            {% if next_class %}
+                <p><strong>下一节课：</strong> {{ next_class.subject }}（{{ next_class.start_time.strftime('%H:%M') }} - {{ next_class.end_time.strftime('%H:%M') }}）</p>
+            {% else %}
+                <p><strong>下一节课：</strong> 今日已无后续课程</p>
+            {% endif %}
+
+            <h3>📅 今日课程安排</h3>
+            {% if today_schedule %}
+                <ul>
+                    {% for entry in today_schedule %}
+                        <li>{{ entry.start_time.strftime('%H:%M') }} - {{ entry.end_time.strftime('%H:%M') }}：{{ entry.subject }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>今天没有安排课程</p>
+            {% endif %}
+        </section>
+    {% endif %}
+
+    <section>
+        <h2>班级公告</h2>
+        <ul>
+            {% for announcement in announcements %}
+                <li>
+                    <strong>{{ announcement.title }}</strong><br>
+                    {{ announcement.content }}<br>
+                    <small>{{ announcement.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+    </section>
+
+</body>
+</html>

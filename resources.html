@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学校资料馆</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>学校资料馆</h1>
+    </header>
+
+    <!-- 搜索与筛选表单 -->
+    <form method="GET" action="{{ url_for('resources') }}">
+        <input type="text" name="keyword" placeholder="搜索标题关键词" value="{{ keyword or '' }}" style="width: 250px; padding: 8px;">
+
+        <select name="category" style="width: 180px; padding: 8px;">
+            <option value="all" {% if category == 'all' or not category %}selected{% endif %}>所有类别</option>
+            <option value="Teaching Materials" {% if category == 'Teaching Materials' %}selected{% endif %}>教学资料</option>
+            <option value="Research Paper" {% if category == 'Research Paper' %}selected{% endif %}>研究论文</option>
+        </select>
+
+        <button type="submit" style="padding: 8px 12px;">🔍 搜索</button>
+    </form>
+
+    <h2>资料列表</h2>
+    <ul>
+        {% for resource in resources %}
+            <li>
+                <strong>{{ resource.title }}</strong><br>
+                类别：{{ resource.category }}<br>
+                上传者：{{ resource.uploader.username }}<br>
+                上传日期：{{ resource.upload_date.strftime('%Y-%m-%d') }}<br>
+                <a href="{{ url_for('get_file', filename=resource.file_path) }}" download>下载文献</a>
+                <br><br>
+            </li>
+        {% else %}
+            <p>暂无符合条件的资料。</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>

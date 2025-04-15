@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>发布公告</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>发布新公告</h1>
+    <form method="POST">
+        <label for="title">标题：</label>
+        <input type="text" name="title" required>
+        <br>
+        <label for="content">内容：</label>
+        <textarea name="content" rows="5" required></textarea>
+        <br>
+        <button type="submit">发布</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>选择班级</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>请选择你的班级</h1>
+    </header>
+
+    <form method="POST">
+        <label for="class_id">班级：</label>
+        <select name="class_id" required>
+            {% for classroom in classrooms %}
+                <option value="{{ classroom.id }}">{{ classroom.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button type="submit">提交</button>
+    </form>
+</body>
+</html>
